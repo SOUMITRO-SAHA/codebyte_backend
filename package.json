@@ -1,12 +1,37 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "This repository contains the backend code for a code template selling site. The site lets users buy and sell code snippets and scripts for various programming languages and frameworks. The backend uses Node.js, Express, MongoDB.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:SOUMITRO-SAHA/codebyte_backend.git"
+  },
+  "keywords": [ ],
+  "author": "Soumitra Saha",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/SOUMITRO-SAHA/codebyte_backend/issues"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "formidable": "^3.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.3",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
 }
