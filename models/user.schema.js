@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
-import { AuthRoles } from '../utils/authRoles';
-import bcrypt from 'bcryptjs';
-import JWT from 'jsonwebtoken';
-import crypto from 'crypto';
-import config from '../config/index';
+const mongoose = require('mongoose');
+const { AuthRoles } = require('../utils/authRoles.js');
+const bcrypt = require('bcryptjs');
+const JWT = require('jsonwebtoken');
+const crypto = require('crypto');
+const { config } = require('../config');
 
 const userSchema = mongoose.Schema(
   {
@@ -43,7 +43,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// add more featuers directly to your schema
+// add more features directly to your schema
 userSchema.methods = {
   //compare password
   comparePassword: async function (enteredPassword) {
@@ -64,6 +64,7 @@ userSchema.methods = {
     );
   },
 
+  // Generate Forgot Password token + timeout
   generateForgotPasswordToken: function () {
     const forgotToken = crypto.randomBytes(20).toString('hex');
 
@@ -74,10 +75,10 @@ userSchema.methods = {
       .digest('hex');
 
     this.forgotPasswordExpiry = Date.now() + 20 * 60 * 1000;
-    //step 2 - return values to user
 
+    //step 2 - return values to user
     return forgotToken;
   },
 };
 
-export default mongoose.model('User', userSchema);
+module.exports = mongoose.model('user', userSchema);

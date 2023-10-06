@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import config from './index.js';
+const { config } = require('.');
+const mongoose = require('mongoose');
 
-const connect = () => {
+exports.connect = () => {
   mongoose
     .connect(config.MONGODB_URL, {
       useNewUrlParser: true,
@@ -14,5 +14,3 @@ const connect = () => {
       process.exit(1);
     });
 };
-
-export default connect;

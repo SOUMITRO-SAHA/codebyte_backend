@@ -1,11 +1,12 @@
-import connect from './config/database.js';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import express from 'express';
-import morgan from 'morgan';
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const express = require('express');
+const morgan = require('morgan');
+const db = require('./config/database.js');
+const userRoutes = require('./routes/user.routes.js');
 
 // Establishing the Database connection
-connect();
+db.connect();
 const app = express();
 
 // Middleware
@@ -16,5 +17,6 @@ app.use(cors());
 app.use(morgan('tiny'));
 
 // Routes
+app.use(userRoutes);
 
-export default app;
+module.exports = app;
