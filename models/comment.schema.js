@@ -16,6 +16,10 @@ const commentSchema = new mongoose.Schema(
       ref: 'Post',
       required: true,
     },
+    community: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Community',
+    },
     replyTo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Comment',
