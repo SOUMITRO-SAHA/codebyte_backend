@@ -1,7 +1,7 @@
 const Project = require('../models/project.schema');
 const formidable = require('formidable');
 const path = require('path');
-const fs = require('fs-extra');
+const fs = require('fs');
 const {
   createProjectValidator,
   updateProjectValidator,
