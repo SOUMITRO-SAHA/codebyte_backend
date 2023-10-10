@@ -10,6 +10,9 @@ router.post('/', isLoggedIn, postController.createPost);
 // Get all posts
 router.get('/', postController.getAllPosts);
 
+// Get Posts by User Info:
+router.get('/q', postController.getPostByUserId);
+
 // Get a specific post by ID
 router.get('/:id', postController.getPostById);
 

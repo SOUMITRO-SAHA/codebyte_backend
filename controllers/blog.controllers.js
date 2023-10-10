@@ -60,6 +60,23 @@ exports.getPostById = async (req, res) => {
   }
 };
 
+exports.getPostByUserId = async (req, res) => {
+  try {
+    const { uId } = req.query;
+    console.log(uId);
+
+    const posts = await Post.find({ author: uId });
+
+    res.status(200).json({ success: true, posts });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};
+
 // Update a post by ID
 exports.updatePostById = async (req, res) => {
   try {
@@ -72,21 +89,17 @@ exports.updatePostById = async (req, res) => {
         .status(404)
         .json({ success: false, message: 'Post not found' });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: 'Post updated successfully',
-        post: updatedPost,
-      });
+    res.status(200).json({
+      success: true,
+      message: 'Post updated successfully',
+      post: updatedPost,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: 'Internal Server Error',
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
   }
 };
 
@@ -100,20 +113,16 @@ exports.deletePostById = async (req, res) => {
         .status(404)
         .json({ success: false, message: 'Post not found' });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: 'Post deleted successfully',
-        post: deletedPost,
-      });
+    res.status(200).json({
+      success: true,
+      message: 'Post deleted successfully',
+      post: deletedPost,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: 'Internal Server Error',
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
   }
 };
