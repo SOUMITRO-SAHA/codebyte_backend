@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const projectSchema = new mongoose.Schema(
   {
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
     thumbnail: {
       type: String,
       required: true,

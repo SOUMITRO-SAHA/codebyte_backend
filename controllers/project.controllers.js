@@ -58,6 +58,7 @@ exports.createProject = (req, res) => {
 
       const newProject = new Project({
         ...value,
+        author: req.user._id,
         thumbnail: imagePath,
       });
 

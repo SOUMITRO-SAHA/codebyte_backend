@@ -10,6 +10,7 @@ const postSchema = new Schema(
     },
     content: {
       type: Schema.Types.Mixed,
+      minLength: [255, 'Post content should be greater than 255 characters'],
     },
     author: {
       type: Schema.Types.ObjectId,

@@ -7,9 +7,10 @@ const {
   updateProjectById,
   deleteProjectById,
 } = require('../controllers/project.controllers');
+const { isLoggedIn } = require('../middleware/auth.middleware');
 
 // Create a new project
-router.post('/', createProject);
+router.post('/', isLoggedIn, createProject);
 
 // Get all projects
 router.get('/', getAllProjects);

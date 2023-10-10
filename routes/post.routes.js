@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const postController = require('../controllers/blog.controllers');
+const { isLoggedIn } = require('../middleware/auth.middleware');
 
 // Create a new post
-router.post('/', postController.createPost);
+router.post('/', isLoggedIn, postController.createPost);
 
 // Get all posts
 router.get('/', postController.getAllPosts);
@@ -13,7 +14,7 @@ router.get('/', postController.getAllPosts);
 router.get('/:id', postController.getPostById);
 
 // Update a post by ID
-router.put('/:id', postController.updatePostById);
+router.patch('/:id', postController.updatePostById);
 
 // Delete a post by ID
 router.delete('/:id', postController.deletePostById);

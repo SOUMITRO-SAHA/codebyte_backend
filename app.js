@@ -7,7 +7,7 @@ const userRoutes = require('./routes/user.routes.js');
 const postRoutes = require('./routes/post.routes.js');
 const commentRoutes = require('./routes/comment.routes.js');
 const likeRoutes = require('./routes/like.routes.js');
-const projectRoutes = require('./routes/project.routes.js');
+// const projectRoutes = require('./routes/project.routes.js');
 const communityRoutes = require('./routes/community.routes.js');
 const path = require('path');
 
@@ -43,7 +43,7 @@ app.use(userRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
 app.use('/likes', likeRoutes);
-app.use('/projects', projectRoutes);
+// app.use('/projects', projectRoutes);
 app.use('/community', communityRoutes);
 
 module.exports = app;
