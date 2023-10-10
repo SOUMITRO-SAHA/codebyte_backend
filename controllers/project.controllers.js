@@ -1,8 +1,11 @@
 const Project = require('../models/project.schema');
 const formidable = require('formidable');
 const path = require('path');
-const fs = require('fs');
-const createProjectValidator = require('../validator/project.validator');
+const fs = require('fs-extra');
+const {
+  createProjectValidator,
+  updateProjectValidator,
+} = require('../validator/project.validator');
 
 // Create a new project
 exports.createProject = (req, res) => {
@@ -16,6 +19,7 @@ exports.createProject = (req, res) => {
         error: err.message,
       });
     }
+
     const projectObject = {
       projectTitle: fields.projectTitle[0],
       shortDescription: fields.shortDescription[0],
@@ -141,8 +145,7 @@ exports.updateProjectById = async (req, res) => {
       }
     });
 
-    const { error, value } =
-      createProjectValidator.updateProjectValidator.validate(updateObject);
+    const { error, value } = updateProjectValidator.validate(updateObject);
 
     if (error) {
       return res.send({

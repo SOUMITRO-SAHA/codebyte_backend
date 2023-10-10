@@ -63,7 +63,6 @@ exports.getPostById = async (req, res) => {
 exports.getPostByUserId = async (req, res) => {
   try {
     const { uId } = req.query;
-    console.log(uId);
 
     const posts = await Post.find({ author: uId });
 
@@ -77,7 +76,6 @@ exports.getPostByUserId = async (req, res) => {
   }
 };
 
-// Update a post by ID
 exports.updatePostById = async (req, res) => {
   try {
     const postId = req.params.id;
@@ -103,7 +101,6 @@ exports.updatePostById = async (req, res) => {
   }
 };
 
-// Delete a post by ID
 exports.deletePostById = async (req, res) => {
   try {
     const postId = req.params.id;

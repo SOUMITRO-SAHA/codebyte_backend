@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const createProjectValidator = Joi.object({
+exports.createProjectValidator = Joi.object({
   projectTitle: Joi.string().required(),
   shortDescription: Joi.string().max(50),
   projectDescription: Joi.string(),
@@ -11,7 +11,7 @@ const createProjectValidator = Joi.object({
   customSlug: Joi.string(),
 });
 
-const updateProjectValidator = Joi.object({
+exports.updateProjectValidator = Joi.object({
   projectTitle: Joi.string(),
   shortDescription: Joi.string().max(50),
   projectDescription: Joi.string(),
@@ -21,4 +21,3 @@ const updateProjectValidator = Joi.object({
   category: Joi.string().valid('Free', 'Paid').default('Free'),
   customSlug: Joi.string(),
 });
-module.exports = { createProjectValidator, updateProjectValidator };
