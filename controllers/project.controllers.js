@@ -1,19 +1,22 @@
 const Project = require('../models/project.schema');
-const formidable = require('formidable');
-const path = require('path');
-const fs = require('fs');
+const multer = require('multer');
 const {
   createProjectValidator,
   updateProjectValidator,
 } = require('../validator/project.validator');
+const upload = require('../services/imageUploader');
 
 // Create a new project
-exports.createProject = (req, res) => {
-  const form = new formidable.IncomingForm();
-
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      return res.status(500).json({
+exports.createProject = async (req, res) => {
+  upload.single('thumbnail')(req, res, async function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.send({
+        success: false,
+        message: 'Error uploading file',
+        error: err.message,
+      });
+    } else if (err) {
+      return res.send({
         success: false,
         message: 'Internal Server Error',
         error: err.message,
@@ -21,14 +24,14 @@ exports.createProject = (req, res) => {
     }
 
     const projectObject = {
-      projectTitle: fields.projectTitle[0],
-      shortDescription: fields.shortDescription[0],
-      projectDescription: fields.projectDescription[0],
-      projectLink: fields.projectLink[0],
-      videoLink: fields.videoLink[0],
-      sourceCodeLink: fields.sourceCodeLink[0],
-      category: fields.category[0],
-      customSlug: fields.customSlug[0],
+      projectTitle: req.body.projectTitle,
+      shortDescription: req.body.shortDescription,
+      projectDescription: req.body.projectDescription,
+      projectLink: req.body.projectLink,
+      videoLink: req.body.videoLink,
+      sourceCodeLink: req.body.sourceCodeLink,
+      category: req.body.category,
+      customSlug: req.body.customSlug,
     };
 
     // Validate the requests:
@@ -42,7 +45,7 @@ exports.createProject = (req, res) => {
       });
     }
 
-    if (!files.thumbnail) {
+    if (!req.file) {
       return res.status(400).json({
         success: false,
         message: 'No photo is selected',
@@ -50,20 +53,11 @@ exports.createProject = (req, res) => {
     }
 
     try {
-      // Handle image upload
-      const uploadFolderPath = path.join(__dirname, '../uploads/thumbnails');
-      const photo = files.thumbnail;
-      const filePath = photo[0].filepath;
-      const data = fs.readFileSync(filePath);
-      const imageExtension = photo[0].mimetype.split('/')[1];
-      const imageName = `p-th_${Date.now()}.${imageExtension}`;
-      const imagePath = path.join(uploadFolderPath, imageName);
-      fs.writeFileSync(imagePath, data);
-
+      const thumbnailPath = req.file.path;
       const newProject = new Project({
         ...value,
         author: req.user._id,
-        thumbnail: imagePath,
+        thumbnail: thumbnailPath,
       });
 
       if (!newProject) {
@@ -75,7 +69,7 @@ exports.createProject = (req, res) => {
 
       const savedProject = await newProject.save();
 
-      res.status(201).json({ success: true, project: savedProject });
+      res.status(200).json({ success: true, project: savedProject });
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -124,6 +118,7 @@ exports.getProjectById = async (req, res) => {
 
 // Update a project by ID
 exports.updateProjectById = async (req, res) => {
+  /*
   const projectId = req.params.id;
 
   const form = new formidable.IncomingForm();
@@ -191,6 +186,7 @@ exports.updateProjectById = async (req, res) => {
       });
     }
   });
+*/
 };
 
 // Delete a project by ID
