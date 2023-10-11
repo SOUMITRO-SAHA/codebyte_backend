@@ -2,6 +2,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const morgan = require('morgan');
+const path = require('path');
+
 const db = require('./config/database.js');
 const userRoutes = require('./routes/user.routes.js');
 const postRoutes = require('./routes/post.routes.js');
@@ -9,7 +11,8 @@ const commentRoutes = require('./routes/comment.routes.js');
 const likeRoutes = require('./routes/like.routes.js');
 const projectRoutes = require('./routes/project.routes.js');
 const communityRoutes = require('./routes/community.routes.js');
-const path = require('path');
+const techStackRoutes = require('./routes/techStack.routes.js');
+const portfolioRoutes = require('./routes/portfolio.routes.js');
 
 // Establishing the Database connection
 db.connect();
@@ -45,5 +48,7 @@ app.use('/comments', commentRoutes);
 app.use('/likes', likeRoutes);
 app.use('/projects', projectRoutes);
 app.use('/community', communityRoutes);
+app.use('/tech-stack', techStackRoutes);
+app.use('/portfolio', portfolioRoutes);
 
 module.exports = app;
