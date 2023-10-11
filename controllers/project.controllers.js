@@ -5,6 +5,7 @@ const {
   updateProjectValidator,
 } = require('../validator/project.validator');
 const upload = require('../services/imageUploader');
+const fs = require('fs');
 
 // Create a new project
 exports.createProject = async (req, res) => {
@@ -118,13 +119,16 @@ exports.getProjectById = async (req, res) => {
 
 // Update a project by ID
 exports.updateProjectById = async (req, res) => {
-  /*
-  const projectId = req.params.id;
-
-  const form = new formidable.IncomingForm();
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      return res.status(500).json({
+  const { id: projectId } = req.params;
+  upload.single('thumbnail')(req, res, async (err) => {
+    if (err instanceof multer.MulterError) {
+      return res.send({
+        success: false,
+        message: 'Error uploading file',
+        error: err.message,
+      });
+    } else if (err) {
+      return res.send({
         success: false,
         message: 'Internal Server Error',
         error: err.message,
@@ -133,10 +137,10 @@ exports.updateProjectById = async (req, res) => {
 
     const updateObject = {};
 
-    // Loop through the fields and add them to the updateObject if they have a value
-    Object.keys(fields).forEach((key) => {
-      if (fields[key]) {
-        updateObject[key] = fields[key][0];
+    // If the object has value then it will add to updatedObject
+    Object.keys(req.body).forEach((key) => {
+      if (req.body[key]) {
+        updateObject[key] = req.body[key];
       }
     });
 
@@ -149,22 +153,31 @@ exports.updateProjectById = async (req, res) => {
         error: error.details[0].message,
       });
     }
-    if (files.thumbnail) {
-      // Handle image upload
-      const uploadFolderPath = path.join(__dirname, '../uploads/thumbnails');
-      const photo = files.thumbnail;
-      const filePath = photo[0].filepath;
-      const data = fs.readFileSync(filePath);
-      const imageExtension = photo[0].mimetype.split('/')[1];
-      const imageName = `p-th_${Date.now()}.${imageExtension}`;
-      const imagePath = path.join(uploadFolderPath, imageName);
-      fs.writeFileSync(imagePath, data);
-
-      // Push into the updateObject
-      updateObject[thumbnail] = imagePath;
-    }
-
     try {
+      // Fetch the current data
+      const currentProject = await Project.findById(projectId);
+
+      if (!currentProject) {
+        return res.send({
+          success: false,
+          message: 'Project not found in the Database',
+        });
+      }
+
+      // Getting the Previous thumbnail path
+      const previousThumbnailPath = currentProject.thumbnail;
+
+      if (req.file) {
+        // Handle image upload
+        const imagePath = req.file.path;
+
+        // Push into the updateObject
+        updateObject['thumbnail'] = imagePath;
+
+        // Delete the previous image
+        fs.unlinkSync(previousThumbnailPath);
+      }
+
       const updatedProject = await Project.findByIdAndUpdate(
         projectId,
         updateObject,
@@ -186,7 +199,6 @@ exports.updateProjectById = async (req, res) => {
       });
     }
   });
-*/
 };
 
 // Delete a project by ID
