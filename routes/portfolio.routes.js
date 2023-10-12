@@ -1,8 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const {
+  createPortfolio,
+  getAllPortfolios,
+  updatePortfolioById,
+  deletePortfolioById,
+  getPortfolioById,
+} = require('../controllers/portfolio.controllers');
+const { isLoggedIn } = require('../middleware/auth.middleware');
 
-const { createPortfolio } = require('../controllers/portfolio.controllers');
+router.post('/', isLoggedIn, createPortfolio);
+router.get('/', getAllPortfolios);
 
-router.post('/', createPortfolio);
+router.patch('/:id', isLoggedIn, updatePortfolioById);
+router.get('/:id', getPortfolioById);
+router.delete('/:id', deletePortfolioById);
 
 module.exports = router;
