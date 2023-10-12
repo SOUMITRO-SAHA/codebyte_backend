@@ -1,11 +1,8 @@
 # Work Update
 
-## BlogPost APIs
+## Comment APIs
 
-- UpdateBlogPost API
-
-## Community APIs
-
-- Get Community
-- Update Community
-- Delete Community 
+- Get All Comments
+- Get Comment By Id
+- Update Comment By Id
+- Delete Comment By Id
