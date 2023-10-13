@@ -28,7 +28,7 @@ exports.createPortfolio = async (req, res) => {
     }
 
     try {
-      const { title, description, liveProjectLink, techStack } = req.body;
+      let { title, description, liveProjectLink, techStack } = req.body;
       const imageUrl = req.file.path;
 
       const newPortfolio = new Portfolio({
@@ -57,7 +57,7 @@ exports.createPortfolio = async (req, res) => {
 
 exports.getAllPortfolios = async (req, res) => {
   try {
-    const portfolios = await Portfolio.find();
+    const portfolios = await Portfolio.find().populate('techStack');
     res.status(200).json({ success: true, portfolios });
   } catch (error) {
     res.status(500).json({
@@ -71,7 +71,7 @@ exports.getAllPortfolios = async (req, res) => {
 exports.getPortfolioById = async (req, res) => {
   const { id } = req.params;
   try {
-    const portfolio = await Portfolio.findById(id);
+    const portfolio = await Portfolio.findById(id).populate('techStack');
     if (!portfolio) {
       return res.status(404).json({
         success: false,
