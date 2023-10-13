@@ -21,7 +21,7 @@ exports.createComment = async (req, res) => {
 
 exports.getAllComments = async (req, res) => {
   try {
-    const comments = await Comment.find();
+    const comments = await Comment.find().populate('author');
     res.status(200).json({ success: true, comments });
   } catch (error) {
     res.status(500).json({
@@ -35,7 +35,7 @@ exports.getAllComments = async (req, res) => {
 exports.getCommentById = async (req, res) => {
   const { id } = req.params;
   try {
-    const comment = await Comment.findById(id);
+    const comment = await Comment.findById(id).populate('author');
     if (!comment) {
       return res.status(404).json({
         success: false,
