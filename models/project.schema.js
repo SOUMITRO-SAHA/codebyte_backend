@@ -41,6 +41,7 @@ const projectSchema = new mongoose.Schema(
     customSlug: {
       type: String,
     },
+    techStack: [{ type: String }],
   },
   {
     timestamps: true,

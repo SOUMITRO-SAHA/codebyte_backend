@@ -9,6 +9,7 @@ exports.createProjectValidator = Joi.object({
   sourceCodeLink: Joi.string(),
   category: Joi.string().valid('Free', 'Paid').default('Free'),
   customSlug: Joi.string(),
+  techStack: Joi.array().required(),
 });
 
 exports.updateProjectValidator = Joi.object({

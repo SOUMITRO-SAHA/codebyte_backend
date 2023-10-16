@@ -33,6 +33,7 @@ exports.createProject = async (req, res) => {
       sourceCodeLink: req.body.sourceCodeLink,
       category: req.body.category,
       customSlug: req.body.customSlug,
+      techStack: req.body.techStack,
     };
 
     // Validate the requests:
