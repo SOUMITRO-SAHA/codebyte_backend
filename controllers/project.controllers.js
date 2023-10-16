@@ -85,7 +85,7 @@ exports.createProject = async (req, res) => {
 // Get all projects
 exports.getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.find();
+    const projects = await Project.find().populate('author');
     res.status(200).json({ success: true, projects });
   } catch (error) {
     res.status(500).json({
@@ -100,7 +100,7 @@ exports.getAllProjects = async (req, res) => {
 exports.getProjectById = async (req, res) => {
   try {
     const projectId = req.params.id;
-    const project = await Project.findById(projectId);
+    const project = await Project.findById(projectId).populate('author');
 
     if (!project) {
       return res
