@@ -10,13 +10,48 @@ const userSchema = mongoose.Schema(
     name: {
       type: String,
       required: [true, 'Name is required'],
-      maxLength: [50, 'Name must be less than 50'],
+      maxLength: [50, 'Name must be less than 50 characters.'],
     },
     email: {
       type: String,
       required: [true, 'Email is required'],
       unique: true,
+      match: [
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        'Please provide a valid email address.',
+      ],
     },
+    phone: {
+      type: String,
+      unique: true,
+      match: [/^[0-9]{10}$/, 'Please provide a valid 10-digit phone number.'],
+    },
+    introduction: {
+      type: String,
+      maxLength: [255, 'Introduction must be less than 255 characters.'],
+    },
+    socials: [
+      {
+        name: {
+          type: String,
+          enum: [
+            'Facebook',
+            'Twitter',
+            'YouTube',
+            'Instagram',
+            'LinkedIn',
+            'Github',
+          ],
+        },
+        link: {
+          type: String,
+          match: [
+            /^(https?:\/\/)?(www\.)?[a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
+            'Please provide a valid URL.',
+          ],
+        },
+      },
+    ],
     password: {
       type: String,
       required: [true, 'password is required'],
