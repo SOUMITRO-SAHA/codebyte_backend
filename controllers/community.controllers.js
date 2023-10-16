@@ -1,4 +1,5 @@
 const Community = require('../models/community.schema');
+const Comment = require('../models/comment.schema');
 
 exports.createCommunity = async (req, res) => {
   try {
@@ -25,7 +26,9 @@ exports.createCommunity = async (req, res) => {
 
 exports.getAllCommunities = async (req, res) => {
   try {
-    const communities = await Community.find().populate('userId', 'name');
+    const communities = await Community.find()
+      .populate('userId', 'name')
+      .populate('comments');
 
     res.status(200).json({ success: true, communities });
   } catch (error) {
@@ -42,7 +45,9 @@ exports.getCommunityById = async (req, res) => {
   const { id: communityId } = req.params;
 
   try {
-    const community = await Community.findById(communityId);
+    const community = await Community.findById(communityId).populate(
+      'comments'
+    );
 
     if (!community) {
       return res.status(404).json({
@@ -114,6 +119,44 @@ exports.deleteCommunityById = async (req, res) => {
       message: 'Community deleted successfully',
     });
   } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};
+
+exports.commentOnPost = async (req, res) => {
+  try {
+    const { communityPostId: postId, text } = req.body;
+
+    const communityPost = await Community.findById(postId);
+
+    if (!communityPost) {
+      return res.status(404).json({
+        success: false,
+        message: 'Community post not found',
+      });
+    }
+
+    const newComment = new Comment({
+      post: postId,
+      author: req.user._id,
+      text,
+    });
+
+    const savedComment = await newComment.save();
+
+    communityPost.comments.push(savedComment._id);
+    await communityPost.save();
+
+    res.status(201).json({
+      success: true,
+      comment: savedComment,
+    });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Internal Server Error',
