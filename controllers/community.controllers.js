@@ -176,3 +176,47 @@ exports.commentOnPost = async (req, res) => {
     });
   }
 };
+
+exports.deleteCommentOfPost = async (req, res) => {
+  try {
+    const { id: commentId } = req.params;
+
+    // Find the comment
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+      return res.status(404).json({
+        success: false,
+        message: 'Comment not found',
+      });
+    }
+
+    // Ensure that the user deleting the comment is the author
+    if (comment.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: 'You are not authorized to delete this comment',
+      });
+    }
+
+    // Remove the comment from the post
+    await Community.findByIdAndUpdate(comment.post, {
+      $pull: { comments: commentId },
+    });
+
+    // Delete the comment
+    await Comment.findByIdAndDelete(commentId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Comment deleted successfully',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};

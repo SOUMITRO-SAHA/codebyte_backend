@@ -7,6 +7,7 @@ const {
   updateCommunityById,
   deleteCommunityById,
   commentOnPost,
+  deleteCommentOfPost,
 } = require('../controllers/community.controllers');
 const { isLoggedIn } = require('../middleware/auth.middleware');
 
@@ -27,5 +28,6 @@ router.delete('/:id', isLoggedIn, deleteCommunityById);
 
 // Comment on community Post
 router.post('/comment', isLoggedIn, commentOnPost);
+router.delete('/comment/:id', isLoggedIn, deleteCommentOfPost);
 
 module.exports = router;
