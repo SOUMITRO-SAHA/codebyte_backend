@@ -22,10 +22,14 @@ exports.isLoggedIn = async (req, res, next) => {
 
   try {
     const decodedJwtPayload = JWT.verify(token, config.JWT_SECRET);
+
     //_id, find user based on id, set this in req.user
     req.user = await User.findById(decodedJwtPayload._id);
     next();
   } catch (error) {
-    throw new CustomError('NOt authorized to access this route', 401);
+    res.status(401).json({
+      success: false,
+      message: 'Not authorized to access this route',
+    });
   }
 };
