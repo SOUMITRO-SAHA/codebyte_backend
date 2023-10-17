@@ -62,9 +62,9 @@ exports.getPostById = async (req, res) => {
 
 exports.getPostByUserId = async (req, res) => {
   try {
-    const { uId } = req.query;
+    const { userId } = req.query;
 
-    const posts = await Post.find({ author: uId });
+    const posts = await Post.find({ author: userId });
 
     res.status(200).json({ success: true, posts });
   } catch (error) {

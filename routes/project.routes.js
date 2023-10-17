@@ -6,6 +6,7 @@ const {
   getProjectById,
   updateProjectById,
   deleteProjectById,
+  getProjectsByUserId,
 } = require('../controllers/project.controllers');
 const { isLoggedIn } = require('../middleware/auth.middleware');
 
@@ -14,6 +15,9 @@ router.post('/', isLoggedIn, createProject);
 
 // Get all projects
 router.get('/', getAllProjects);
+
+// Get Projects by User Info:
+router.get('/q', getProjectsByUserId);
 
 // Get a specific project by ID
 router.get('/:id', getProjectById);

@@ -96,6 +96,26 @@ exports.getAllProjects = async (req, res) => {
   }
 };
 
+// Get Projects By User Info:
+exports.getProjectsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.query;
+
+    const project = await Project.find({ author: userId });
+
+    res.status(200).json({
+      success: true,
+      project,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};
+
 // Get a specific project by ID
 exports.getProjectById = async (req, res) => {
   try {
