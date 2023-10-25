@@ -63,6 +63,18 @@ const userSchema = mongoose.Schema(
       enum: Object.values(AuthRoles),
       default: AuthRoles.USER,
     },
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    following: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
     forgotPasswordToken: String,
     forgotPasswordExpiry: Date,
   },
