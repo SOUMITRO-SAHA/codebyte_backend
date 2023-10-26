@@ -243,6 +243,34 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+// Get user by User Id
+exports.getUserById = async (req, res) => {
+  try {
+    const { id: userId } = req.params;
+    const user = await User.findById(userId).select(
+      'name email followers following'
+    );
+
+    if (!user) {
+      return res.send({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};
+
 // Get the User Information
 exports.getUserInfo = async (req, res) => {
   try {

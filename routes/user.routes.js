@@ -14,6 +14,7 @@ const {
   getAllUsers,
   updateSocials,
   removeSocial,
+  getUserById,
 } = require('../controllers/user.controllers.js');
 const { isLoggedIn } = require('../middleware/auth.middleware.js');
 
@@ -32,6 +33,7 @@ router
 router
   .get('/u', isLoggedIn, getUserInfo)
   .get('/u/all', isLoggedIn, getAllUsers)
+  .get('/u/:id', isLoggedIn, getUserById)
   .post('/u/update', isLoggedIn, updateProfile)
   .post('/u/socials', isLoggedIn, addSocials)
   .patch('/u/socials', isLoggedIn, updateSocials)
