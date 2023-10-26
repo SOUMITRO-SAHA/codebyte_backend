@@ -248,7 +248,7 @@ exports.getUserById = async (req, res) => {
   try {
     const { id: userId } = req.params;
     const user = await User.findById(userId).select(
-      'name email followers following'
+      'name email phone socials followers following '
     );
 
     if (!user) {
