@@ -24,10 +24,9 @@ exports.loginUserValidator = (data) => {
 // Update Profile Validator
 exports.updateProfileValidator = (data) => {
   const schema = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().required(),
-    phone: Joi.string().required(),
-    introduction: Joi.string().max(255).required(),
+    name: Joi.string().optional(),
+    phone: Joi.string().optional(),
+    introduction: Joi.string().max(255).optional(),
   });
 
   return schema.validate(data);

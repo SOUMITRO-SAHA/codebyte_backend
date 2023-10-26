@@ -3,6 +3,7 @@ const {
   registerUserValidator,
   loginUserValidator,
   socialsProfileValidators,
+  updateProfileValidator,
 } = require('../validator/user.validator.js');
 const { cookieOptions } = require('../utils/cookieOptions.js');
 const { config } = require('../config/index.js');
@@ -187,15 +188,22 @@ exports.forgotPassword = async (req, res) => {
 // Update user profile information
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, email, phone, introduction } = updateProfileValidator(
-      req.body
-    );
+    const { error, value } = updateProfileValidator(req.body);
+    if (error) {
+      return res.status(403).json({
+        success: false,
+        message: 'Validation failed',
+        error: error.details[0].message,
+      });
+    }
+
+    const { name, phone, introduction } = value;
 
     // Find the user by ID and update their profile information
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
-      { name, email, phone, introduction },
-      { new: true, runValidators: true }
+      { name, phone, introduction },
+      { new: true }
     );
 
     if (!updatedUser) {
