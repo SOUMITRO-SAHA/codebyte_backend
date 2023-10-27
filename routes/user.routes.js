@@ -7,7 +7,6 @@ const {
   forgotPassword,
   updateProfile,
   addSocials,
-  updatePassword,
   getUserInfo,
   followUser,
   UnFollowUser,
@@ -15,6 +14,7 @@ const {
   updateSocials,
   removeSocial,
   getUserById,
+  resetPassword,
 } = require('../controllers/user.controllers.js');
 const { isLoggedIn } = require('../middleware/auth.middleware.js');
 
@@ -26,6 +26,7 @@ router
   .post('/auth/registration', registration)
   .post('/auth/login', login)
   .post('/auth/forgotPassword', forgotPassword)
+  .patch('/auth/reset-password', isLoggedIn, resetPassword)
   .get('/auth/logout', logOut)
   .get('/auth/session', isLoggedIn, checkSession);
 
@@ -40,8 +41,7 @@ router
 router
   .post('/u/socials', isLoggedIn, addSocials)
   .patch('/u/socials', isLoggedIn, updateSocials)
-  .delete('/u/socials/:socialId', isLoggedIn, removeSocial)
-  .post('/u/updatePassword', isLoggedIn, updatePassword);
+  .delete('/u/socials/:socialId', isLoggedIn, removeSocial);
 
 // Follow and Un - Follow
 router

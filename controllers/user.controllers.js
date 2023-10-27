@@ -11,6 +11,8 @@ const {
   sendForgetPasswordTokenByEmail,
 } = require('../services/emailSender.js');
 
+const bcrypt = require('bcryptjs');
+
 exports.registration = async (req, res) => {
   try {
     // Validate the Input:
@@ -111,7 +113,7 @@ exports.login = async (req, res) => {
 
     res.send({
       success: false,
-      message: 'Invalid credentials',
+      message: 'Wrong Password',
     });
   } catch (error) {
     res.status(500).json({
@@ -174,6 +176,44 @@ exports.forgotPassword = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Reset token sent to you email',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};
+
+// Update user password
+exports.resetPassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    // Find the user by ID
+    const user = await User.findById(req.user._id).select('+password');
+
+    // Check if the current password matches the stored password
+    if (!user || !(await user.comparePassword(currentPassword))) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid current password',
+      });
+    }
+
+    // Update the password
+    user.password = newPassword;
+
+    // Save the updated user
+    await user.save();
+
+    // Remove the password from the response
+    user.password = undefined;
+
+    res.status(200).json({
+      success: true,
+      message: 'Password updated successfully',
     });
   } catch (error) {
     res.status(500).json({
@@ -294,50 +334,6 @@ exports.getUserInfo = async (req, res) => {
     res.status(200).json({
       success: true,
       user,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Internal Server Error',
-      error: error.message,
-    });
-  }
-};
-
-// Update user password
-exports.updatePassword = async (req, res) => {
-  try {
-    const { currentPassword, newPassword } = req.body;
-
-    // Check if the current password matches the stored password
-    const user = await User.findById(req.user._id).select('+password');
-    if (!user || !(await user.comparePassword(currentPassword))) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid current password',
-      });
-    }
-
-    // Updating the Password of the users
-    // Hash the new password before saving it to the database
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    // Update the Password of the user with the hashed password
-    user.password = hashedPassword;
-
-    const token = user.getJwtToken();
-
-    // Refresh the token
-    user.token = token;
-
-    // Save the updated user
-    await user.save();
-
-    // Remove the password from the response
-    user.password = undefined;
-    return res.cookie('token', token, cookieOptions).status(200).json({
-      success: true,
-      message: 'Password updated successfully',
     });
   } catch (error) {
     res.status(500).json({
