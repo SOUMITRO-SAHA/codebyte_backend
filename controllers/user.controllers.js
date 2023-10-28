@@ -186,7 +186,49 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
-// Update user password
+exports.resetPasswordByValidToken = async (req, res) => {
+  try {
+    const { resetToken, newPassword } = req.body;
+
+    // Find the user by the reset token
+    const user = await User.findOne({
+      forgotPasswordToken: resetToken,
+      forgotPasswordExpiry: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid or expired reset token',
+      });
+    }
+
+    // Update the password
+    user.password = newPassword;
+
+    // Clear the reset token and expiry
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+
+    // Save the updated user
+    await user.save();
+
+    // Remove the password from the response
+    user.password = undefined;
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset successful',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
+};
+
 exports.resetPassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;

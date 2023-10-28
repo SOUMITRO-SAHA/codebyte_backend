@@ -1,5 +1,9 @@
 # Work Update
-- Get User By Id
-  - Multiple Fields added
-  - Social Media Profile 
-  - Update User Information (UPDATE)
+(UPDATE) User APIs 2
+(UPDATE) portfolio APIs 1
+(UPDATE) forget password API
+(New) reset password API
+(New) reset password by valid Token API [For forgot Password]
+
+- [Server Error resolved]
+- Server Update
