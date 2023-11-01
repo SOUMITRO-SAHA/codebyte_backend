@@ -13,6 +13,7 @@ const projectRoutes = require('./routes/project.routes.js');
 const communityRoutes = require('./routes/community.routes.js');
 const techStackRoutes = require('./routes/techStack.routes.js');
 const portfolioRoutes = require('./routes/portfolio.routes.js');
+const contactRoutes = require('./routes/contact.routes.js');
 
 // Establishing the Database connection
 db.connect();
@@ -50,5 +51,6 @@ app.use('/projects', projectRoutes);
 app.use('/community', communityRoutes);
 app.use('/tech-stack', techStackRoutes);
 app.use('/portfolio', portfolioRoutes);
+app.use('/contact', contactRoutes);
 
 module.exports = app;
