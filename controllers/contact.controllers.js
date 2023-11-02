@@ -5,6 +5,7 @@ exports.createContact = async (req, res) => {
     const { email, subject, message } = req.body;
 
     const newContact = new Contact({
+      author: req.user._id,
       email,
       subject,
       message,
@@ -58,10 +59,10 @@ exports.getContactById = async (req, res) => {
 
 exports.updateContactById = async (req, res) => {
   try {
-    const { email, subject, message } = req.body;
+    const { status } = req.body;
     const updatedContact = await Contact.findByIdAndUpdate(
       req.params.id,
-      { email, subject, message },
+      { status },
       { new: true }
     );
     if (!updatedContact) {
