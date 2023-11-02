@@ -33,8 +33,8 @@ router
 // User:
 router
   .get('/u', isLoggedIn, getUserInfo)
-  .get('/u/all', isLoggedIn, getAllUsers)
-  .get('/u/:id', isLoggedIn, getUserById)
+  .get('/u/all', getAllUsers)
+  .get('/u/:id', getUserById)
   .patch('/u/update', isLoggedIn, updateProfile);
 
 // Socials
