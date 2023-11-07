@@ -1,7 +1,8 @@
-(Update) | like APIs
-  - Like
-  - UnLike
 (new) | Contact APIs
-  - Create Contact API [Done]
-  - Get Contact API [Done]
-  - Delete Contact API [Working on it]
+Schema
+Validators
+- Create Contact API
+- Get All Contact API
+- Get Contact API
+- Update Contact Status API
+- Delete Contact API

@@ -196,7 +196,7 @@ exports.updateProjectById = async (req, res) => {
         updateObject['thumbnail'] = imagePath;
 
         // Delete the previous image
-        fs.unlinkSync(previousThumbnailPath);
+        if (previousThumbnailPath) fs.unlinkSync(previousThumbnailPath);
       }
 
       const updatedProject = await Project.findByIdAndUpdate(
